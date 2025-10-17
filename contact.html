@@ -165,48 +165,34 @@ footer {
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-(function(){
-  emailjs.init("Gmail-Patharender"); // Replace with your EmailJS user ID
+(function() {
+  emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
 })();
 
-// Footer year
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// Fade overlay
-window.addEventListener('load', () => {
-  const overlay = document.getElementById('fade-overlay');
-  overlay.style.opacity = 0;
-  setTimeout(() => { overlay.style.display = 'none'; }, 1500);
-});
-
-// Form submission
 document.getElementById('contact-form').addEventListener('submit', function(e){
   e.preventDefault();
   const form = this;
 
-  // Send message to your email (admin)
+  // Send message to admin
   emailjs.sendForm('service_p24tg0t', 'contact_form_template', form)
     .then(() => {
-
-      // Auto-reply to user
-      emailjs.send('service_p24tg0t', 'template_4esbqdp', {
+      // Auto reply to user
+      return emailjs.send('service_p24tg0t', 'template_4esbqdp', {
         user_name: form.user_name.value,
         user_email: form.user_email.value,
         message: form.message.value
-      }).then(()=>{
-        alert('Message sent successfully! Confirmation sent to your email.');
-        form.reset();
-      }).catch(err=>{
-        console.error('Auto-reply error:', err);
-        alert('Message sent but auto-reply failed.');
       });
-
-    }, (err) => {
-      console.error('Message error:', err);
-      alert('Oops! Something went wrong. Try again.');
+    })
+    .then(() => {
+      alert('✅ Message sent successfully! Confirmation sent to your email.');
+      form.reset();
+    })
+    .catch(err => {
+      console.error('EmailJS error:', err);
+      alert('❌ Something went wrong. Check console for details.');
     });
 });
-
 </script>
+
 </body>
 </html>
