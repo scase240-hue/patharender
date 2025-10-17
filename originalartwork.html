@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Original Artworks — Patharender</title>
+<style>
+
+/* ===== Page Fade-In From Black ===== */
+body {
+  opacity: 0;
+  background-color: #000;
+  transition: opacity 1.5s ease;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+
+  body{
+    font-family:'Poppins',sans-serif;
+    background:#0e0f12;
+    color:#fff;
+    margin:0;
+    overflow-x:hidden;
+  }
+
+  h1{
+    text-align:center;
+    font-size:48px;
+    margin:60px 0 30px;
+    background:linear-gradient(135deg,#ff7e5f,#feb47b,#ffb347);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+  }
+
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    width:90%;
+    max-width:1300px;
+    margin:0 auto 140px;
+  }
+
+  .item{
+    position:relative;
+    overflow:hidden;
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,0.08);
+    cursor:pointer;
+    transition:transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform 0.6s ease;
+    display:block;
+  }
+
+  .item:hover img{
+    transform:scale(1.08);
+    filter:brightness(0.8);
+  }
+
+  .overlay{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    padding:20px;
+    background:linear-gradient(0deg,rgba(0,0,0,0.8),transparent);
+    opacity:0;
+    transform:translateY(20px);
+    transition:all 0.4s ease;
+  }
+
+  .item:hover .overlay{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  .overlay h3{
+    margin:0;
+    font-size:18px;
+    color:#ffb347;
+  }
+
+  .overlay p{
+    margin:5px 0 0;
+    font-size:14px;
+    color:#ccc;
+  }
+
+  /* Modal Viewer */
+  .modal{
+    position:fixed;
+    top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,0.95);
+    display:flex;justify-content:center;align-items:center;
+    opacity:0;pointer-events:none;
+    transition:opacity 0.3s ease;
+    z-index:100;
+  }
+
+  .modal.active{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .modal-content img{
+    max-width:90vw;
+    max-height:90vh;
+    border-radius:8px;
+    box-shadow:0 0 20px rgba(255,255,255,0.3);
+  }
+
+  /* Footer */
+  footer{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    text-align:center;
+    padding:10px 0;
+    font-size:13px;
+    color:#aaa;
+    background:rgba(14,15,18,0.85);
+    border-top:1px solid rgba(255,255,255,0.1);
+    backdrop-filter:blur(8px);
+  }
+
+</style>
+</head>
+<body>
+
+<h1>Original Artworks</h1>
+
+<div class="gallery" id="gallery"></div>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <div class="modal-content" id="modalContent"></div>
+</div>
+
+<footer>© <span id="year"></span> Patharender — All rights reserved.</footer>
+
+<script>
+const gallery=document.getElementById('gallery');
+const modal=document.getElementById('modal');
+const modalContent=document.getElementById('modalContent');
+
+const artworks=[
+  {src:'original-artworks/orig-01.jpg',title:'Lucid Ruins',desc:'A surreal descent into forgotten memories — where beauty dissolves into distortion.'},
+  {src:'original-artworks/orig-02.jpg',title:'Neon Silence',desc:'A city that speaks in color when words are lost to static air.'},
+  {src:'original-artworks/orig-03.jpg',title:'Echoform',desc:'Reflections folding upon themselves — a dialogue between chaos and calm.'},
+  {src:'original-artworks/orig-04.jpg',title:'Vessel of Thought',desc:'An exploration of form, emotion, and void intertwined in digital canvas.'},
+  {src:'original-artworks/orig-05.jpg',title:'Beneath Still Light',desc:'Moments caught in eternal pause — the motion of stillness itself.'},
+  {src:'original-artworks/orig-06.jpg',title:'Digital Ashes',desc:'Fragments of creation fading into the noise of infinity.'},
+  {src:'original-artworks/orig-07.jpg',title:'Veil of Dreams',desc:'Reality melted by imagination — the threshold of sleep and waking.'},
+  {src:'original-artworks/orig-08.jpg',title:'The Fractured Mirror',desc:'Where identity meets illusion — the self breaks into color.'}
+];
+
+artworks.forEach(a=>{
+  const item=document.createElement('div');
+  item.className='item';
+  const img=document.createElement('img');
+  img.src=a.src;
+  item.appendChild(img);
+
+  const overlay=document.createElement('div');
+  overlay.className='overlay';
+  overlay.innerHTML=`<h3>${a.title}</h3><p>${a.desc}</p>`;
+  item.appendChild(overlay);
+
+  item.addEventListener('click',()=>{
+    modal.classList.add('active');
+    modalContent.innerHTML=`<img src="${a.src}" alt="${a.title}">`;
+  });
+
+  gallery.appendChild(item);
+});
+
+// Close modal
+modal.addEventListener('click',e=>{
+  if(e.target===modal){modal.classList.remove('active');modalContent.innerHTML='';}
+});
+
+// Footer year
+document.getElementById('year').textContent=new Date().getFullYear();
+// Page fade-in effect
+window.addEventListener('load', () => {
+  document.body.classList.add('fade-in');
+});
+
+</script>
+
+</body>
+</html>

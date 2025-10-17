@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Work</title>
+<style>
+/* ===== Reset & Base ===== */
+* {margin:0;padding:0;box-sizing:border-box;}
+body {
+  font-family:'Poppins',sans-serif;
+  color:#fff;
+  background: linear-gradient(135deg,#0e0f12,#111319,#14161c);
+  background-size:400% 400%;
+  animation: gradientFlow 12s ease infinite, fadeIn 1.5s ease forwards;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* ===== Gradient Animations ===== */
+@keyframes gradientFlow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+@keyframes fadeIn{
+  from{opacity:0;background-color:black;}
+  to{opacity:1;}
+}
+
+/* ===== Header ===== */
+header {
+  background: linear-gradient(90deg,#000,#222,#555,#fff);
+  background-size:300% 300%;
+  animation: headerMove 10s ease infinite;
+  padding:15px 25px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+@keyframes headerMove{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+header h1 {
+  font-size:1.4rem;
+  background:linear-gradient(135deg,#fff,#bfbfbf,#808080);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:1px;
+}
+
+/* ===== Menu ===== */
+nav{position:relative;}
+.menu-toggle{cursor:pointer;width:30px;height:20px;display:flex;flex-direction:column;justify-content:space-between; z-index:20;}
+.menu-toggle span{height:3px;background:#fff;border-radius:2px;}
+.menu{
+  display:none;
+  position:absolute;
+  right:0;
+  top:40px;
+  background:rgba(0,0,0,0.85);
+  border-radius:8px;
+  overflow:hidden;
+  min-width:180px;
+  z-index:15;
+}
+.menu a{display:block;padding:12px 16px;color:#fff;text-decoration:none;transition:background 0.3s;}
+.menu a:hover{background:rgba(255,255,255,0.1);}
+.menu.show{display:block;} /* JS toggle */
+
+/* ===== Gallery ===== */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  padding:60px 40px 100px;
+}
+@media(max-width:768px){.gallery{grid-template-columns:repeat(2,1fr);padding:40px 20px 100px;}}
+
+.item{
+  position:relative;
+  overflow:hidden;
+  border-radius:10px;
+  background:rgba(255,255,255,0.05);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:transform 0.3s,box-shadow 0.3s;
+}
+.item:hover{transform:scale(1.02);box-shadow:0 0 15px rgba(255,255,255,0.2);}
+
+.item img,.item video{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.5s ease, filter 0.5s ease;
+}
+
+.item:hover img{transform:scale(1.05);}
+.item:hover video{transform:scale(1.05);filter:brightness(1.1);}
+
+/* Info below thumbnail */
+.item .info{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  background:rgba(0,0,0,0.5);
+  text-align:center;
+  font-size:0.9rem;
+  padding:6px 0;
+  opacity:0.9;
+  color:#fff;
+  pointer-events:none;
+  backdrop-filter:blur(4px);
+}
+
+/* ===== Modal ===== */
+#modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.85);
+  justify-content:center;
+  align-items:center;
+  z-index:100;
+  padding:20px;
+}
+#modal.active{display:flex;}
+
+#modal-content{
+  max-width:80vw;   /* scale down */
+  max-height:80vh;  /* scale down */
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:12px;
+}
+
+#modal-content img,
+#modal-content video{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:8px;
+  display:block;
+}
+
+/* ===== Footer ===== */
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:rgba(0,0,0,0.9);
+  color:#aaa;
+  font-size:0.85rem;
+  text-align:center;
+  padding:10px 0;
+  border-top:1px solid rgba(255,255,255,0.1);
+}
+
+/* ===== Floating Home Button ===== */
+.floating-home-btn{
+  position:fixed;
+  bottom:60px;
+  right:30px;
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  padding:12px 20px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:14px;
+  backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.2);
+  box-shadow:0 0 8px rgba(255,255,255,0.2);
+  cursor:pointer;
+  transition:all 0.3s ease;
+  animation:floatHome 3s ease-in-out infinite;
+  z-index:20;
+}
+.floating-home-btn:hover{
+  transform:translateY(-6px) scale(1.05);
+  box-shadow:0 0 15px rgba(255,255,255,0.4);
+  background:linear-gradient(135deg,#ff7e5f,#feb47b);
+  border-color:#ff7e5f;
+}
+@keyframes floatHome{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Client Work</h1>
+  <nav>
+    <div class="menu-toggle"><span></span><span></span><span></span></div>
+    <div class="menu">
+      <a href="index.html">Home</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="original-artworks.html">Original Artworks</a>
+      <a href="pre-made-artworks.html">Pre-Made Artworks</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="gallery">
+  <!-- Images -->
+  <div class="item"><img src="client-work/img-01.jpg" alt=""><div class="info">Album CoverART</div></div>
+  <div class="item"><img src="client-work/img-02.jpg" alt=""><div class="info">Album CoverART</div></div>
+  <div class="item"><img src="client-work/img-03.png" alt=""><div class="info">Album CoverART</div></div>
+  <div class="item"><img src="client-work/img-04.png" alt=""><div class="info">Album CoverART</div></div>
+
+  <!-- Videos -->
+  <div class="item"><video src="client-work/vid-01.mp4" muted playsinline></video><div class="info"><h3>Promotional Reel</h3> For instagram</div></div>
+  <div class="item"><video src="client-work/vid-02.mp4" muted playsinline></video><div class="info"><h3>3D Viz Music Video</h3> For Youtube</div></div>
+  <div class="item"><video src="client-work/vid-03.mp4" muted playsinline></video><div class="info"><h3>Promotional Reel for Brand/Cafe</h3> For Instagram</div></div>
+  <div class="item"><video src="client-work/vid-04.mp4" muted playsinline></video><div class="info"><h3>Brand Cinematic</h3> For Instagram</div></div>
+  <div class="item"><video src="client-work/vid-05.mp4" muted playsinline></video><div class="info"><h3>Campaign Showcase</h3> For Launch and Socials</div></div>
+</section>
+
+<div id="modal"><div id="modal-content"></div></div>
+
+<a href="index.html" class="floating-home-btn">🏠 Home</a>
+
+<footer>© 2025 Your Studio Name — All Rights Reserved.</footer>
+
+<script>
+const modal=document.getElementById('modal');
+const modalContent=document.getElementById('modal-content');
+const items=document.querySelectorAll('.item');
+const menuToggle=document.querySelector('.menu-toggle');
+const menu=document.querySelector('.menu');
+
+/* Hover play/pause for videos */
+items.forEach(item=>{
+  const vid=item.querySelector('video');
+  if(vid){
+    item.addEventListener('mouseenter',()=>{ vid.currentTime=0; vid.play(); });
+    item.addEventListener('mouseleave',()=>{ vid.pause(); vid.currentTime=0; });
+  }
+});
+
+/* Open modal on click */
+items.forEach(item=>{
+  item.addEventListener('click',()=>{
+    const img=item.querySelector('img');
+    const vid=item.querySelector('video');
+    modal.classList.add('active');
+    modalContent.innerHTML='';
+    if(img){
+      const modalImg=document.createElement('img');
+      modalImg.src=img.src;
+      modalContent.appendChild(modalImg);
+    } else if(vid){
+      const modalVideo=document.createElement('video');
+      modalVideo.src=vid.src;
+      modalVideo.autoplay=true;
+      modalVideo.controls=true;
+      modalContent.appendChild(modalVideo);
+    }
+  });
+});
+
+/* Close modal on click outside or ESC */
+modal.addEventListener('click',e=>{
+  if(!modalContent.contains(e.target)){
+    modal.classList.remove('active');
+    modalContent.innerHTML='';
+  }
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape' && modal.classList.contains('active')){
+    modal.classList.remove('active');
+    modalContent.innerHTML='';
+  }
+});
+
+/* Menu toggle on click */
+menuToggle.addEventListener('click',()=>{ menu.classList.toggle('show'); });
+document.addEventListener('click',e=>{
+  if(!menu.contains(e.target) && !menuToggle.contains(e.target)){
+    menu.classList.remove('show');
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patharender — Perfect Aesthetic</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Roboto&family=Montserrat&family=Playfair+Display&family=Lobster&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#101216;
+  --btn-bg:rgba(255,255,255,0.08);
+  --btn-hover:rgba(255,255,255,0.2);
+  --muted:#a0a5ab;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  color:#fff;
+  min-height:190vh;
+  overflow-x:hidden;
+  position:relative;
+}
+
+#gradient-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(130deg, #0f0f0f, #1a1a1a, #3b3b3d, #1a1a1a, #0f0f0f);
+  background-size: 600% 600%;
+  z-index: -1;
+  animation: gradientWave 10s ease infinite;
+  transition: opacity 1s ease;
+}
+
+@keyframes gradientWave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+#gradient-overlay.hide { opacity:0; pointer-events:none; }
+
+/* Background video */
+#bg-video{
+  position:fixed; top:0; left:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  z-index:-2;
+  opacity:0;
+  transition: opacity 1s ease;
+}
+
+/* Logo */
+#logo{
+  position:fixed; top:50%; left:50%;
+  transform:translate(-50%,-50%) scale(1);
+  font-size:64px; font-weight:700;
+  z-index:50; white-space:nowrap;
+  transition: top 0.8s ease, left 0.8s ease, transform 0.8s ease;
+}
+#logo .letter-wrapper { position:relative; display:inline-block; width:0.6em; text-align:center; }
+#logo .letter-wrapper .font-variant {
+  position:absolute; top:0; left:50%;
+  transform:translateX(-50%);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  white-space: nowrap;
+}
+
+/* Buttons */
+.hero-buttons{
+  display:flex; gap:20px; position:fixed; top:60%;
+  left:50%; transform:translate(-50%,0); flex-wrap:wrap;
+  justify-content:center; opacity:0; transition: all 0.8s ease;
+  pointer-events:none;
+}
+.hero-buttons.show{ opacity:1; transform:translate(-50%,-40px); pointer-events:auto; }
+.hero-buttons .btn{
+  padding:14px 28px; border-radius:12px; border:none;
+  background:var(--btn-bg); color:#fff; font-weight:600;
+  cursor:pointer; transition:all 0.25s ease; backdrop-filter:blur(8px);
+  animation: float 3s ease-in-out infinite; font-size:14px;
+}
+.hero-buttons .btn:hover{
+  transform: translateY(-10px) scale(1.1);
+  box-shadow:0 10px 25px rgba(255,255,255,0.2);
+  background: linear-gradient(135deg,#ff7e5f,#feb47b);
+}
+@keyframes float { 0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)} }
+
+/* Scroll indicator */
+#scroll-indicator{
+  position:fixed; top:85%; left:50%; transform:translateX(-50%);
+  font-size:16px; font-weight:500; color:rgba(255,255,255,0.5);
+  opacity:1; transition: opacity 0.8s ease; animation:bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(10px);}}
+#scroll-indicator.hide{ opacity:0; }
+
+/* Socials */
+/* Socials default (desktop) */
+.socials{
+  display:flex; justify-content:center; gap:40px;
+  opacity:0; position:fixed; top:91%; left:50%; transform:translate(-50%,10px);
+  transition: all 0.8s ease; pointer-events:none;
+}
+
+/* Social icon styling */
+.social-item{
+  display:flex; flex-direction:column; align-items:center;
+  font-size:7px; text-decoration:none; color:#fff; transition: transform 0.3s ease;
+}
+.social-item:hover { transform: translateY(-5px); }
+.social-item .icon{
+  width:50px; height:50px; margin-bottom:8px;
+  background: rgba(255,255,255,0.1); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:2px solid #fff; box-shadow:0 0 8px rgba(255,255,255,0.6);
+  backdrop-filter:blur(5px); transition:all 0.3s ease;
+}
+.social-item .icon img{ width:24px; height:24px; }
+
+/* Desktop position */
+@media(min-width:769px){
+  .socials{
+    top:80%; left:50%; transform:translate(-50%,10px);
+    flex-direction:row; gap:40px;
+  }
+}
+
+/* Mobile position */
+@media(max-width:768px){
+  .socials{
+    top:auto; bottom:25px; right:10px;
+    left:auto; transform:none; flex-direction:column; gap:15px;
+  }
+}
+.socials.show{ opacity:1; transform:translate(-50%,-10px); pointer-events:auto; }
+.social-item{
+  display:flex; flex-direction:column; align-items:center;
+  font-size:14px; text-decoration:none; color:#fff; transition: transform 0.3s ease;
+}
+.social-item:hover { transform: translateY(-5px); }
+.social-item .icon{
+  width:50px; height:50px; margin-bottom:8px;
+  background: rgba(255,255,255,0.1); border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:1px solid #fff; box-shadow:0 0 8px rgba(255,255,255,0.6);
+  backdrop-filter:blur(8px); transition:all 0.3s ease;
+}
+.social-item .icon img{ width:24px; height:24px; }
+
+/* Footer */
+footer{
+  position:fixed; bottom:-100px; width:100%; padding:15px 0;
+  text-align:center; color:var(--muted);
+  border-top:1px solid rgba(255,255,255,0.1);
+  background:rgba(16,18,22,0.1); backdrop-filter:blur(20px);
+  transition: all 0.5s ease; font-size:14px;
+}
+footer.show{ bottom:-0; }
+
+/* Hamburger */
+#nav-button{
+  position: fixed; top:20px; right:20px; width:30px; height:22px;
+  cursor:pointer; z-index:60; display:flex; flex-direction:column;
+  justify-content:space-between; transition: opacity 0.3s ease;
+}
+#nav-button:hover{opacity:0.7;}
+#nav-button span{ display:block; height:3px; background:#fff; border-radius:2px; transition: all 0.3s ease;}
+#nav-button.active span:nth-child(1){transform: rotate(45deg) translate(5px,5px);}
+#nav-button.active span:nth-child(2){opacity:0;}
+#nav-button.active span:nth-child(3){transform: rotate(-45deg) translate(7px,-6px);}
+
+/* Side menu */
+#side-menu{
+  position:fixed; top:0; right:-220px; height:100%; width:200px;
+  background: rgba(16,18,22,0.5); padding:60px 20px 40px;
+  display:flex; flex-direction:column; gap:20px; transition:right 0.3s ease;
+  z-index:55; backdrop-filter: blur(10px); border-left:1px solid rgba(255,255,255,0.1);
+}
+#side-menu.show{right:0;}
+#side-menu.hover{right:0;}
+/* Menu link styling */
+#side-menu a{
+  position: relative;        /* required for ::after positioning */
+  color:#fff; 
+  text-decoration:none; 
+  font-weight:600; 
+  transition: color 0.3s ease;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Add animated underline */
+#side-menu a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background: #D3D3D3;      /* underline color */
+  transition: width 0.3s ease;
+}
+
+/* Hover effect */
+#side-menu a:hover { 
+  transform:translateX(-5px);       
+  color:#C0C8CF;                    
+}
+#side-menu a:hover::after {
+  width: 100%;               /* underline expands */
+}
+
+
+/* Responsive */
+@media(max-width:768px){
+  #logo{ font-size:48px; }
+  .hero-buttons{ flex-direction:column; gap:15px; }
+  .socials{ gap:25px; }
+}
+/* Fade-in from black overlay */
+#fade-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;           /* solid black */
+  z-index: 9999;              /* above all content */
+  opacity: 1;                 /* fully visible initially */
+  transition: opacity 2s ease; /* fade duration */
+  pointer-events: none;       /* allow clicks to pass through */
+}
+
+</style>
+</head>
+<body>
+<div id="fade-overlay"></div>
+
+<div id="gradient-overlay"></div>
+
+<video id="bg-video" autoplay muted loop playsinline>
+  <source src="media/bg-video.mp4" type="video/mp4">
+</video>
+
+<div id="logo"></div>
+
+<div id="scroll-indicator">scroll ↓</div>
+
+<div class="hero-buttons">
+  <button class="btn" onclick="location.href='portfolio.html'">Portfolio</button>
+  <button class="btn" onclick="location.href='clientwork.html'">Client Work</button>
+  <a class="btn" onclick="location.href='https://artgrab.co/art/patharender'"target="_blank">Pre-Made Artwork</a>
+
+  <button class="btn" onclick="location.href='originalartwork.html'">Original Artwork</button>
+</div>
+
+<!-- Custom social icons -->
+<div class="socials">
+  <a href="https://www.instagram.com/patharender/" target="_blank" class="social-item">
+    <div class="icon"><img src="media/instagram.png" alt="Instagram"></div>
+    <span>Instagram</span>
+  </a>
+  <a href="https://www.behance.net/patharepat9593" target="_blank" class="social-item">
+    <div class="icon"><img src="media/behance.png" alt="Behance"></div>
+    <span>Behance</span>
+  </a>
+  <a href="https://x.com/pathare_shivam" target="_blank" class="social-item">
+    <div class="icon"><img src="media/twitter.png" alt="Twitter"></div>
+    <span>Twitter</span>
+  </a>
+<a href="contact.html" class="social-item">
+  <div class="icon"><img src="media/contact.png" alt="Contact"></div>
+  <span>Contact</span>
+</a>
+
+</div>
+
+<div id="nav-button"><span></span><span></span><span></span></div>
+
+<div id="side-menu">
+  <a href="portfolio.html">Portfolio</a>
+  <a href="client-work.html">Client Work</a>
+ <a href="https://artgrab.co/art/patharender target="_blank" class="artgrab-btn">Pre-Made Artwork</a>
+
+  <a href="originalartwork.html">Original Artwork</a>
+<a href="contact.html" class="contact-btn">Contact</a>
+
+</div>
+
+<footer>© <span id="year"></span> Patharender — All rights reserved. <h5>Designed by Patharender</h5></footer>
+
+<script>
+/* Logo morphing */
+const fonts = ["'Poppins', sans-serif","'Roboto', sans-serif","'Montserrat', sans-serif","'Playfair Display', serif","'Lobster', cursive"];
+const logoText="Patharender";
+const logo=document.getElementById('logo');
+let morphInterval=null;
+logoText.split('').forEach(letter=>{
+  const wrapper=document.createElement('span'); wrapper.className='letter-wrapper';
+  fonts.forEach((font,index)=>{
+    const span=document.createElement('span'); span.className='font-variant';
+    span.textContent=letter; span.style.fontFamily=font;
+    span.style.opacity=index===0?1:0; span.style.transform=index===0?'translateX(-50%) scale(1)':'translateX(-50%) scale(0.9)';
+    wrapper.appendChild(span);
+  });
+  logo.appendChild(wrapper);
+});
+function startMorphing(){
+  if(morphInterval)return;
+  morphInterval=setInterval(()=>{
+    logo.querySelectorAll('.letter-wrapper').forEach(wrapper=>{
+      const children=wrapper.querySelectorAll('.font-variant');
+      children.forEach(s=>{s.style.opacity=0;s.style.transform='translateX(-50%) scale(0.9)';});
+      const next=Math.floor(Math.random()*children.length);
+      children[next].style.opacity=1;
+      children[next].style.transform='translateX(-50%) scale(1)';
+    });
+  },2000);
+}
+function stopMorphing(){if(morphInterval){clearInterval(morphInterval); morphInterval=null;}}
+startMorphing();
+
+/* Scroll triggers */
+let firstTriggered=false, secondTriggered=false, thirdTriggered=false;
+const socials=document.querySelector('.socials'); const footer=document.querySelector('footer');
+const scrollIndicator=document.getElementById('scroll-indicator');
+function handleScroll(){
+  const scrollY=window.scrollY;
+  if(scrollY>5&&!firstTriggered){ firstTriggered=true; logo.style.top='32px'; logo.style.left='32px'; logo.style.transform='translate(0,0) scale(0.45)'; document.querySelector('.hero-buttons').classList.add('show'); scrollIndicator.classList.add('hide');}
+  else if(scrollY<=5&&firstTriggered){ firstTriggered=false; logo.style.top='50%'; logo.style.left='50%'; logo.style.transform='translate(-50%,-50%) scale(1)'; document.querySelector('.hero-buttons').classList.remove('show'); scrollIndicator.classList.remove('hide'); }
+  if(scrollY>100&&!secondTriggered){ secondTriggered=true; socials.classList.add('show'); }
+  else if(scrollY<=100&&secondTriggered){ secondTriggered=false; socials.classList.remove('show'); }
+  if(scrollY>window.innerHeight*0.9&&!thirdTriggered){ thirdTriggered=true; footer.classList.add('show'); }
+  else if(scrollY<=window.innerHeight*0.9&&thirdTriggered){ thirdTriggered=false; footer.classList.remove('show'); }
+}
+window.addEventListener('scroll', handleScroll);
+
+/* Footer year */
+document.getElementById('year').textContent=new Date().getFullYear();
+
+/* Hamburger */
+const navBtn=document.getElementById('nav-button'); const sideMenu=document.getElementById('side-menu'); let isMenuPinned=false;
+navBtn.addEventListener('click',()=>{isMenuPinned=!isMenuPinned; if(isMenuPinned){sideMenu.classList.add('show'); navBtn.classList.add('active');} else{sideMenu.classList.remove('show'); navBtn.classList.remove('active');}});
+navBtn.addEventListener('mouseenter',()=>{if(!isMenuPinned){sideMenu.classList.add('hover');}});
+navBtn.addEventListener('mouseleave',()=>{if(!isMenuPinned){setTimeout(()=>{if(!sideMenu.matches(':hover')){sideMenu.classList.remove('hover');}},100);}});
+sideMenu.addEventListener('mouseenter',()=>{if(!isMenuPinned){sideMenu.classList.add('hover');}});
+sideMenu.addEventListener('mouseleave',()=>{if(!isMenuPinned){sideMenu.classList.remove('hover');}});
+document.addEventListener('click',(e)=>{if(!sideMenu.contains(e.target)&&!navBtn.contains(e.target)&&isMenuPinned){isMenuPinned=false; sideMenu.classList.remove('show'); navBtn.classList.remove('active');}});
+
+/* Escape key */
+document.addEventListener('keydown', e=>{if(e.key==='Escape'){ firstTriggered=false; secondTriggered=false; thirdTriggered=false; isMenuPinned=false; logo.style.top='50%'; logo.style.left='50%'; logo.style.transform='translate(-50%,-50%) scale(1)'; document.querySelector('.hero-buttons').classList.remove('show'); socials.classList.remove('show'); footer.classList.remove('show'); sideMenu.classList.remove('show'); sideMenu.classList.remove('hover'); navBtn.classList.remove('active'); scrollIndicator.classList.remove('hide'); window.scrollTo({top:0, behavior:'smooth'});}});
+
+/* Gradient to video transition */
+setTimeout(()=>{document.getElementById('gradient-overlay').classList.add('hide'); document.getElementById('bg-video').style.opacity=0.4;},2500);
+
+/* Tab visibility */
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopMorphing();} else{startMorphing();}});
+window.addEventListener('load', () => {
+  const overlay = document.getElementById('fade-overlay');
+  overlay.style.opacity = 0;         // start fading
+  setTimeout(() => {
+    overlay.style.display = 'none';  // remove after fade
+  }, 2000);                          // match 3s fade duration
+});
+
+</script>
+
+</body>
+</html>
