@@ -151,40 +151,31 @@
 
   <footer>© <span id="year"></span> Patharender — All rights reserved.</footer>
 
-  <!-- EmailJS SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <script>
-    (function() {
-      emailjs.init("eBDmfJd6Urq7nFkWH"); // ✅ Your EmailJS public key
-    })();
+ <!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function() {
+  emailjs.init("eBDmfJd6Urq7nFkWH"); // Your EmailJS public key
+})();
 
-    document.getElementById('contact-form').addEventListener('submit', function(e){
-      e.preventDefault();
-      const form = this;
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
 
-      // Send message to admin
-     emailjs.sendForm('service_p24tg0t', 'template_4esbqdp', form)
-        .then(() => {
-          // Auto reply to user
-          return emailjs.send('service_p24tg0t', 'template_4esbqdp', {
-            name: form.user_name.value,
-            email: form.user_email.value,
-
-            message: form.message.value
-          });
-        })
-        .then(() => {
-          alert('✅ Message sent successfully! Confirmation sent to your email.');
-          form.reset();
-        })
-        .catch(err => {
-          console.error('EmailJS error:', err);
-          alert('❌ Something went wrong. Check console for details.');
-        });
+  // EmailJS will automatically grab inputs with name="name", "email", "message"
+  emailjs.sendForm('service_p24tg0t', 'template_4esbqdp', this)
+    .then(() => {
+      alert('✅ Message sent successfully! Confirmation sent to your email.');
+      this.reset();
+    })
+    .catch(err => {
+      console.error('EmailJS error:', err);
+      alert('❌ Something went wrong. Check console for details.');
     });
+});
 
-    // Auto year
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+// Auto year update
+document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
 </html>
