@@ -139,12 +139,13 @@
   <h1 class="chrome-text">Contact</h1>
   <p class="chrome-subtext">For collaborations, commissions, or inquiries, reach out below.</p>
 
-  <form id="contact-form">
-    <input type="text" name="user_name" placeholder="Your Name" required>
-    <input type="email" name="user_email" placeholder="Your Email" required>
-    <textarea name="message" placeholder="Your Message" required></textarea>
-    <button type="submit">Send Message</button>
-  </form>
+<form id="contact-form">
+  <input type="text" name="name" placeholder="Your Name" required>
+  <input type="email" name="email" placeholder="Your Email" required>
+  <textarea name="message" placeholder="Your Message" required></textarea>
+  <button type="submit">Send Message</button>
+</form>
+
 
   <a href="index.html">← Back to Home</a>
 
@@ -166,8 +167,9 @@
         .then(() => {
           // Auto reply to user
           return emailjs.send('service_p24tg0t', 'template_4esbqdp', {
-            name: form.user_name.value,      // Matches EmailJS template variables
+            name: form.user_name.value,
             email: form.user_email.value,
+
             message: form.message.value
           });
         })
