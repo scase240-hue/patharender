@@ -166,20 +166,18 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
 (function() {
-  emailjs.init("eBDmfJd6Urq7nFkWH"); // Replace with your EmailJS public key
+  emailjs.init("eBDmfJd6Urq7nFkWH");
 })();
 
 document.getElementById('contact-form').addEventListener('submit', function(e){
   e.preventDefault();
   const form = this;
 
-  // Send message to admin
   emailjs.sendForm('service_p24tg0t', 'contact_form_template', form)
     .then(() => {
-      // Auto reply to user
       return emailjs.send('service_p24tg0t', 'template_4esbqdp', {
-        user_name: form.user_name.value,
-        user_email: form.user_email.value,
+        name: form.user_name.value,
+        email: form.user_email.value,
         message: form.message.value
       });
     })
